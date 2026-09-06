@@ -106,6 +106,9 @@ body {
     border: 1px solid rgba(255,255,255,0.06);
     border-radius: 12px;
     padding: 4px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .search-box input {
@@ -293,7 +296,22 @@ body {
 
 .nav-item.active { color: var(--primary); }
 
-.nav-icon { font-size: 20px; }
+/* === SVG ICONS === */
+.icon {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+}
+
+.icon-sm { width: 14px; height: 14px; }
+.icon-md { width: 18px; height: 18px; }
+.icon-nav { width: 24px; height: 24px; display: block; margin: 0 auto; color: var(--text-muted); }
+.nav-item.active .icon-nav { color: var(--primary); }
+.icon-sun { width: 18px; height: 18px; color: var(--text-muted); }
+.icon-search-input { width: 18px; height: 18px; color: var(--text-muted); flex-shrink: 0; }
 
 .nav-label { font-size: 10px; font-weight: 500; }
 

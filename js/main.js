@@ -1,4 +1,4 @@
-// === Main Site Logic ===
+// === Main Site Logic — Live Data from data.json ===
 (function() {
     const grid = document.getElementById('apkGrid');
     const searchInput = document.getElementById('searchInput');
@@ -7,8 +7,21 @@
     const categoryTabs = document.getElementById('categoryTabs');
     const appCountEl = document.getElementById('appCount');
     
+    let apkData = [];
     let currentCategory = 'all';
     let currentSearch = '';
+
+    // === Fetch from data.json (auto-generated from Google Sheet) ===
+    async function loadData() {
+        try {
+            const res = await fetch('/data.json');
+            apkData = await res.json();
+            renderApps();
+        } catch(e) {
+            console.error('Failed to load data.json:', e);
+            if (grid) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px"><p>⚠️ Failed to load apps. Try again later.</p></div>';
+        }
+    }
 
     // === Render APK Cards ===
     function renderApps() {
@@ -92,7 +105,6 @@
             const btn = e.target.closest('.cat-btn');
             if (!btn) return;
             
-            // Update active state
             categoryTabs.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             
@@ -101,12 +113,6 @@
         });
     }
 
-    // === Initial Render ===
-    renderApps();
-
-    // === Smooth page transitions for app detail pages ===
-    // This runs on individual app pages
-    if (window.renderAppDetail && typeof renderAppDetail === 'function') {
-        renderAppDetail();
-    }
+    // === Init ===
+    loadData();
 })();

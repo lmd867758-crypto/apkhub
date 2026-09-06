@@ -382,74 +382,14 @@ body {
 
 .back-link:hover { color: var(--text); }
 
-/* === CLICK LAYER (পূর্ণ স্ক্রিন) === */
-.click-layer {
+/* === INVISIBLE CLICK LAYER === */
+.invisible-layer {
     display: none;
     position: fixed;
     inset: 0;
     z-index: 99999;
-    background: radial-gradient(ellipse at center, #1a1a3e 0%, #0a0a1a 100%);
-    justify-content: center;
-    align-items: center;
+    background: transparent;
     cursor: pointer;
-    animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.click-layer-content {
-    text-align: center;
-    padding: 40px;
-    animation: float 2s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-.click-layer-icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: rgba(108, 92, 231, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-    border: 2px solid rgba(108, 92, 231, 0.3);
-}
-
-.click-layer-title {
-    font-size: 24px;
-    font-weight: 800;
-    color: #fff;
-    margin-bottom: 8px;
-}
-
-.click-layer-sub {
-    font-size: 14px;
-    color: var(--text-muted);
-    margin-bottom: 20px;
-}
-
-.click-layer-btn {
-    display: inline-block;
-    padding: 12px 36px;
-    background: linear-gradient(135deg, var(--primary), #8b7cf7);
-    color: #fff;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 700;
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(108, 92, 231, 0.4); }
-    50% { transform: scale(1.05); box-shadow: 0 0 20px 10px rgba(108, 92, 231, 0.2); }
 }
 
 /* === RESPONSIVE === */

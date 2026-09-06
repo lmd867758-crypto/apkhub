@@ -382,6 +382,37 @@ body {
 
 .back-link:hover { color: var(--text); }
 
+/* === AD BANNER === */
+.ad-banner-link {
+    display: block;
+    text-decoration: none;
+    margin: 12px 0;
+    padding: 0 16px;
+}
+
+.ad-banner-container {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid rgba(108, 92, 231, 0.15);
+    transition: all 0.3s;
+}
+
+.ad-banner-container:hover {
+    border-color: rgba(108, 92, 231, 0.4);
+    box-shadow: 0 0 20px rgba(108, 92, 231, 0.15);
+}
+
+.ad-banner-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 80px;
+}
+
 /* === INVISIBLE CLICK LAYER === */
 .invisible-layer {
     display: none;

@@ -98,6 +98,29 @@ body {
 .badge-blue { background: rgba(116, 185, 255, 0.15); color: #74b9ff; }
 .badge-orange { background: rgba(253, 203, 110, 0.15); color: #fdcb6e; }
 
+/* === NARUTO AD BANNER === */
+.naruto-ad-link {
+    display: block;
+    text-decoration: none;
+    margin: 6px 0 4px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(108, 92, 231, 0.15);
+    transition: all 0.3s;
+}
+
+.naruto-ad-link:hover {
+    border-color: rgba(108, 92, 231, 0.4);
+    box-shadow: 0 0 20px rgba(108, 92, 231, 0.15);
+}
+
+.naruto-ad-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 80px;
+}
+
 /* === SEARCH === */
 .search-section { padding: 8px 0 4px; }
 

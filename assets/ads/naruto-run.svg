@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 100" width="100%" height="100">
+  <defs>
+    <style>
+      @keyframes narutoRun { 100% { transform: translateX(300px); } }
+      @keyframes bounceN { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+      @keyframes legL { 0%,100% { transform: rotate(-25deg); } 50% { transform: rotate(25deg); } }
+      @keyframes legR { 0%,100% { transform: rotate(25deg); } 50% { transform: rotate(-25deg); } }
+      @keyframes armL { 0%,100% { transform: rotate(20deg); } 50% { transform: rotate(-20deg); } }
+      @keyframes armR { 0%,100% { transform: rotate(-20deg); } 50% { transform: rotate(20deg); } }
+      @keyframes headband { 0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+      @keyframes blink { 0%,90%,100% { opacity:1; } 95% { opacity:0; } }
+      @keyframes glow { 0%,100% { opacity:0.2; } 50% { opacity:0.5; } }
+      .n-runner { animation: narutoRun 3.5s linear infinite; }
+      .n-body { animation: bounceN 0.35s ease-in-out infinite; }
+      .n-leg-l { transform-origin:38px 68px; animation: legL 0.25s ease-in-out infinite; }
+      .n-leg-r { transform-origin:38px 68px; animation: legR 0.25s ease-in-out infinite; }
+      .n-arm-l { transform-origin:22px 38px; animation: armL 0.25s ease-in-out infinite; }
+      .n-arm-r { transform-origin:54px 38px; animation: armR 0.25s ease-in-out infinite; }
+      .n-headband { transform-origin:40px 22px; animation: headband 0.3s ease-in-out infinite; }
+      .eye { animation: blink 2s infinite; }
+      .glow-bg { animation: glow 2s ease-in-out infinite; }
+    </style>
+  </defs>
+
+  <!-- Background pill -->
+  <rect x="0" y="5" width="340" height="90" rx="16" fill="#12122a" stroke="rgba(108,92,231,0.2)" stroke-width="1"/>
+
+  <!-- Glow -->
+  <circle cx="50" cy="50" r="30" fill="#6c5ce7" opacity="0.12" class="glow-bg"/>
+
+  <!-- Running Naruto -->
+  <g class="n-runner">
+    <g class="n-body">
+      <!-- Shadow -->
+      <ellipse cx="40" cy="85" rx="20" ry="5" fill="rgba(0,0,0,0.3)"/>
+
+      <!-- Headband flowing -->
+      <g class="n-headband">
+        <rect x="50" y="12" width="32" height="5" rx="2" fill="#e74c3c" opacity="0.9"/>
+        <rect x="50" y="12" width="32" height="5" rx="2" fill="#e74c3c" opacity="0.5" transform="rotate(10,66,14)"/>
+        <rect x="50" y="12" width="32" height="5" rx="2" fill="#e74c3c" opacity="0.3" transform="rotate(20,66,14)"/>
+        <!-- Metal plate -->
+        <rect x="58" y="11" width="16" height="7" rx="2" fill="#c0392b"/>
+        <text x="66" y="17" font-family="Arial" font-weight="bold" font-size="7" fill="#fff" text-anchor="middle">木</text>
+      </g>
+
+      <!-- Spiky hair (Naruto style) -->
+      <path d="M38 8 L42 2 L46 8 L50 1 L54 8 L58 3 L56 10 L52 4 L48 10 L44 3 L40 10Z" fill="#f39c12"/>
+      <path d="M34 12 L38 6 L42 12 L46 5 L50 12 L54 6 L52 12Z" fill="#f1c40f"/>
+      <path d="M30 16 L34 10 L38 16 L42 8 L46 16 L50 10 L48 16Z" fill="#f39c12"/>
+
+      <!-- Head -->
+      <circle cx="42" cy="24" r="12" fill="#f5d0a9"/>
+
+      <!-- Whisker marks (Naruto's signature) -->
+      <line x1="35" y1="26" x2="29" y2="24" stroke="#d4a574" stroke-width="1"/>
+      <line x1="35" y1="28" x2="29" y2="28" stroke="#d4a574" stroke-width="1"/>
+      <line x1="49" y1="26" x2="55" y2="24" stroke="#d4a574" stroke-width="1"/>
+      <line x1="49" y1="28" x2="55" y2="28" stroke="#d4a574" stroke-width="1"/>
+
+      <!-- Eyes -->
+      <g class="eye">
+        <ellipse cx="37" cy="23" rx="3.5" ry="4" fill="#fff"/>
+        <circle cx="37" cy="23" r="2.5" fill="#6ab04c"/>
+        <circle cx="37" cy="23" r="1.5" fill="#2d2d5e"/>
+        <circle cx="38" cy="22" r="0.7" fill="#fff"/>
+      </g>
+      <g class="eye">
+        <ellipse cx="47" cy="23" rx="3.5" ry="4" fill="#fff"/>
+        <circle cx="47" cy="23" r="2.5" fill="#6ab04c"/>
+        <circle cx="47" cy="23" r="1.5" fill="#2d2d5e"/>
+        <circle cx="48" cy="22" r="0.7" fill="#fff"/>
+      </g>
+
+      <!-- Mouth (determined) -->
+      <path d="M39 30 Q42 32 45 30" stroke="#c0392b" fill="none" stroke-width="1.2"/>
+
+      <!-- Jacket (orange, Naruto style) -->
+      <rect x="30" y="36" width="24" height="22" rx="4" fill="#e67e22"/>
+      <!-- Jacket collar -->
+      <path d="M36 36 L42 42 L48 36" fill="none" stroke="#d35400" stroke-width="1.5"/>
+      <!-- Zipper -->
+      <line x1="42" y1="40" x2="42" y2="56" stroke="#f39c12" stroke-width="1"/>
+
+      <!-- Arms (running pose - stretched back!) -->
+      <g class="n-arm-l">
+        <rect x="12" y="38" width="18" height="5" rx="2.5" fill="#f5d0a9"/>
+        <rect x="8" y="38" width="6" height="5" rx="2" fill="#f5d0a9" opacity="0.5"/>
+      </g>
+      <g class="n-arm-r">
+        <rect x="54" y="38" width="18" height="5" rx="2.5" fill="#f5d0a9"/>
+        <rect x="70" y="38" width="6" height="5" rx="2" fill="#f5d0a9" opacity="0.5"/>
+      </g>
+
+      <!-- Pants (orange) -->
+      <rect x="31" y="56" width="22" height="10" rx="2" fill="#d35400"/>
+
+      <!-- Legs (running pose) -->
+      <g class="n-leg-l">
+        <rect x="28" y="62" width="8" height="20" rx="3" fill="#e67e22"/>
+        <!-- Sandal -->
+        <rect x="26" y="80" width="12" height="5" rx="2" fill="#2c3e50"/>
+        <rect x="26" y="80" width="4" height="5" rx="1" fill="#34495e"/>
+      </g>
+      <g class="n-leg-r">
+        <rect x="40" y="62" width="8" height="20" rx="3" fill="#e67e22"/>
+        <rect x="38" y="80" width="12" height="5" rx="2" fill="#2c3e50"/>
+        <rect x="46" y="80" width="4" height="5" rx="1" fill="#34495e"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Speed lines -->
+  <g opacity="0.4">
+    <line x1="65" y1="20" x2="90" y2="20" stroke="#f39c12" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="65" y1="45" x2="95" y2="45" stroke="#f39c12" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="65" y1="65" x2="85" y2="65" stroke="#f39c12" stroke-width="1" stroke-linecap="round"/>
+  </g>
+
+  <!-- Ad text -->
+  <text x="110" y="38" font-family="Arial" font-weight="800" font-size="16" fill="#fff">Naruto Run</text>
+  <text x="110" y="56" font-family="Arial" font-size="11" fill="#8888bb">Click here for latest mods!</text>
+
+  <!-- AD badge -->
+  <rect x="275" y="12" width="55" height="22" rx="6" fill="#6c5ce7"/>
+  <text x="302" y="27" font-family="Arial" font-weight="700" font-size="10" fill="#fff" text-anchor="middle">📢 AD</text>
+
+  <!-- Download button -->
+  <rect x="260" y="48" width="70" height="28" rx="8" fill="url(#ctaGrad)"/>
+  <linearGradient id="ctaGrad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#6c5ce7"/>
+    <stop offset="100%" stop-color="#8b7cf7"/>
+  </linearGradient>
+  <text x="295" y="66" font-family="Arial" font-weight="700" font-size="11" fill="#fff" text-anchor="middle">Download</text>
+
+  <!-- Sparkles -->
+  <circle cx="90" cy="12" r="1.5" fill="#fdcb6e" opacity="0">
+    <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="245" cy="20" r="1.5" fill="#74b9ff" opacity="0">
+    <animate attributeName="opacity" values="0;1;0" dur="1.8s" repeatCount="indefinite" begin="1s"/>
+  </circle>
+</svg>

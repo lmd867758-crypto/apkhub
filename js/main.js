@@ -53,9 +53,8 @@
                     </div>
                 </div>
                 <div class="apk-right">
-                    <a href="${app.downloadUrl}" target="_blank" rel="noopener noreferrer" class="download-btn-sm">⬇ Download</a>
-                    <span class="safe-badge"><span class="shield">✅</span> Safe</span>
-                </div>
+                                    <a href="${app.downloadUrl}" target="_blank" rel="noopener noreferrer" class="download-btn-sm">⬇ Download</a>
+                                </div>
             </div>
         `).join('');
     }

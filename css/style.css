@@ -298,6 +298,39 @@ body {
 
 .nav-item.active { color: var(--primary); }
 
+/* === TELEGRAM FOOTER === */
+.tg-footer {
+    text-align: center;
+    padding: 24px 16px 100px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    margin-top: 8px;
+}
+
+.tg-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: rgba(0,136,204,0.08);
+    transition: all 0.2s;
+}
+
+.tg-link:hover {
+    background: rgba(0,136,204,0.18);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.tg-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
 /* === SVG ICONS === */
 .icon {
     width: 20px;

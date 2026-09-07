@@ -28,26 +28,13 @@ export async function onRequest(context) {
         const safeName = fileName.replace(/[^a-zA-Z0-9.-]/g, '_');
         const path = 'assets/icons/' + Date.now() + '-' + safeName;
 
-        // First test the token
-        const userCheck = await fetch('https://api.github.com/user', {
-            headers: { 'Authorization': 'token ' + GITHUB_TOKEN }
-        });
-        
-        if (!userCheck.ok) {
-            const text = await userCheck.text();
-            return new Response(JSON.stringify({ 
-                error: 'GitHub auth failed', 
-                status: userCheck.status,
-                response: text.substring(0, 200)
-            }), { status: 500, headers });
-        }
-
-        // Upload file
+        // Upload to GitHub
         const res = await fetch('https://api.github.com/repos/lmd867758-crypto/apkhub/contents/' + path, {
             method: 'PUT',
             headers: { 
                 'Authorization': 'token ' + GITHUB_TOKEN, 
-                'Content-Type': 'application/json' 
+                'Content-Type': 'application/json',
+                'User-Agent': 'gridexcentral-admin/1.0'
             },
             body: JSON.stringify({ 
                 message: 'Upload icon via admin panel',

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Admin - Gride X Central</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --bg:#0a0a1a; --bg-card:#12122a; --bg-input:#1a1a3a; --text:#fff; --text-muted:#8888bb; --primary:#6c5ce7; --accent:#00b894; --danger:#e74c3c; }
+        body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+        .container { max-width:600px; margin:0 auto; padding:20px 16px; }
+        .login-box { background:var(--bg-card); border-radius:16px; padding:40px 24px; text-align:center; margin-top:80px; border:1px solid rgba(255,255,255,0.06); }
+        .login-box h1 { font-size:24px; margin-bottom:8px; }
+        .login-box p { color:var(--text-muted); font-size:14px; margin-bottom:24px; }
+        .login-box input { width:100%; padding:12px 16px; background:var(--bg-input); border:1px solid rgba(255,255,255,0.1); border-radius:10px; color:var(--text); font-size:16px; outline:none; margin-bottom:16px; }
+        .login-box input:focus { border-color:var(--primary); }
+        .login-btn { width:100%; padding:12px; background:linear-gradient(135deg,var(--primary),#8b7cf7); color:#fff; border:none; border-radius:10px; font-size:16px; font-weight:700; cursor:pointer; }
+        .login-btn:hover { transform:translateY(-1px); }
+        .login-error { color:var(--danger); font-size:13px; margin-top:8px; display:none; }
+        .dashboard { display:none; }
+        .header-bar { display:flex; align-items:center; justify-content:space-between; padding:16px 0; border-bottom:1px solid rgba(255,255,255,0.06); margin-bottom:20px; }
+        .header-bar h2 { font-size:20px; }
+        .header-bar .logo-img { height:30px; }
+        .logout-btn { background:none; border:1px solid rgba(255,255,255,0.1); color:var(--text-muted); padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; }
+        .logout-btn:hover { color:var(--danger); border-color:var(--danger); }
+        .stats-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
+        .stat-card { background:var(--bg-card); border-radius:12px; padding:16px; text-align:center; border:1px solid rgba(255,255,255,0.04); }
+        .stat-card .num { font-size:28px; font-weight:800; color:var(--primary); }
+        .stat-card .label { font-size:12px; color:var(--text-muted); margin-top:4px; }
+        .section-title { font-size:16px; font-weight:700; margin-bottom:12px; margin-top:24px; }
+        .form-card { background:var(--bg-card); border-radius:14px; padding:20px; border:1px solid rgba(255,255,255,0.04); }
+        .form-group { margin-bottom:14px; }
+        .form-group label { display:block; font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:4px; }
+        .form-group input, .form-group textarea, .form-group select { width:100%; padding:10px 14px; background:var(--bg-input); border:1px solid rgba(255,255,255,0.08); border-radius:8px; color:var(--text); font-size:14px; outline:none; }
+        .form-group input:focus, .form-group textarea:focus { border-color:var(--primary); }
+        .form-group textarea { resize:vertical; min-height:60px; }
+        .form-group select option { background:var(--bg-card); }
+        .submit-btn { width:100%; padding:12px; background:linear-gradient(135deg,var(--primary),#8b7cf7); color:#fff; border:none; border-radius:10px; font-size:15px; font-weight:700; cursor:pointer; margin-top:8px; }
+        .submit-btn:hover { transform:translateY(-1px); }
+        .msg { padding:10px 14px; border-radius:8px; font-size:13px; margin-top:12px; display:none; }
+        .msg.success { display:block; background:rgba(0,184,148,0.15); color:var(--accent); }
+        .msg.error { display:block; background:rgba(231,76,60,0.15); color:var(--danger); }
+        .cmd-box { background:#0d0d1a; border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:12px 14px; font-family:monospace; font-size:12px; color:var(--accent); margin-top:12px; word-break:break-all; display:none; line-height:1.6; }
+        .cmd-box .copy-btn { float:right; background:rgba(255,255,255,0.06); border:none; color:var(--text-muted); padding:4px 10px; border-radius:4px; cursor:pointer; font-size:11px; }
+        .app-list-admin { margin-top:12px; }
+        .app-item { display:flex; align-items:center; gap:10px; background:var(--bg-card); padding:10px 14px; border-radius:10px; margin-bottom:8px; border:1px solid rgba(255,255,255,0.04); }
+        .app-item .ai-icon { width:36px; height:36px; border-radius:8px; object-fit:cover; flex-shrink:0; }
+        .app-item .ai-info { flex:1; min-width:0; }
+        .app-item .ai-name { font-size:13px; font-weight:600; }
+        .app-item .ai-meta { font-size:11px; color:var(--text-muted); }
+        .app-item .ai-ver { background:rgba(108,92,231,0.15); color:#a29bfe; padding:2px 8px; border-radius:4px; font-size:11px; }
+        .upload-progress { width:100%; height:6px; background:rgba(255,255,255,0.06); border-radius:3px; margin-top:8px; overflow:hidden; }
+        .upload-progress-bar { height:100%; width:0%; background:linear-gradient(90deg,var(--primary),#8b7cf7); border-radius:3px; transition:width 0.3s; }
+    </style>
+</head>
+<body>
+    <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+        <symbol id="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    </svg>
+
+    <!-- Login -->
+    <div id="loginPage" class="container">
+        <div class="login-box">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#6c5ce7" stroke-width="1.5" style="margin-bottom:16px"><use href="#icon-lock"/></svg>
+            <h1>Admin Login</h1>
+            <p>Enter password to access the dashboard</p>
+            <input type="password" id="passwordInput" placeholder="Enter password..." autocomplete="off">
+            <button class="login-btn" id="loginBtn">Login</button>
+            <div class="login-error" id="loginError">Wrong password. Try again.</div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboardPage" class="dashboard">
+        <div class="container">
+            <div class="header-bar">
+                <div style="display:flex;align-items:center;gap:10px"><img src="/assets/logo-simple.jpg" alt="GX" class="logo-img"><h2>Admin Panel</h2></div>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+
+            <div class="stats-row" id="statsRow">
+                <div class="stat-card"><div class="num" id="totalApps">0</div><div class="label">Total APKs</div></div>
+                <div class="stat-card"><div class="num" id="totalGames">0</div><div class="label">Games</div></div>
+            </div>
+
+            <!-- Upload Icon to GitHub -->
+            <div class="section-title">🖼️ Upload Icon (to GitHub)</div>
+            <div class="form-card" style="border:2px dashed rgba(0,184,148,0.3);background:rgba(0,184,148,0.05)">
+                <div class="form-group">
+                    <label>Select Icon Image</label>
+                    <input type="file" id="fIconFile" accept="image/*">
+                    <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Auto-upload to GitHub. Max 5MB.</div>
+                </div>
+                <div id="iconUploadStatus" style="display:none">
+                    <div class="upload-progress"><div class="upload-progress-bar" id="iconProgressBar"></div></div>
+                    <p id="iconUploadText" style="font-size:13px;color:var(--text-muted);margin-top:8px"></p>
+                </div>
+                <div style="margin-top:8px;font-size:12px;color:var(--text-muted)">Preview: <img id="iconPreview" style="width:40px;height:40px;border-radius:8px;vertical-align:middle;display:none"></div>
+                <div class="msg" id="iconMsg"></div>
+            </div>
+
+            <!-- Add APK Form -->
+            <div class="section-title">➕ Add New APK</div>
+            <div class="form-card">
+                <div class="form-group"><label>App Name *</label><input type="text" id="fName" placeholder="e.g. WhatsApp Plus (MOD, Premium)"></div>
+                <div class="form-group"><label>Description</label><textarea id="fDesc" placeholder="Short description..."></textarea></div>
+                <div class="form-group"><label>Icon URL (auto-filled from upload)</label><input type="url" id="fIcon" placeholder="Upload icon above or paste URL"></div>
+                <div class="form-group"><label>Version</label><input type="text" id="fVersion" placeholder="e.g. 2.23.0"></div>
+                <div class="form-group"><label>Category</label><select id="fCategory"><option value="Games">🎮 Games</option><option value="Apps">📱 Apps</option><option value="Tools">🔧 Tools</option></select></div>
+                <div class="form-group"><label>Download URL (TeraBox link)</label><input type="url" id="fUrl" placeholder="https://1024terabox.com/s/..."></div>
+                <div class="form-group"><label>Features (comma separated)</label><input type="text" id="fFeatures" placeholder="e.g. Premium Unlocked, No Ads"></div>
+                <button class="submit-btn" id="submitBtn">➕ Add to Sheet</button>
+                <div class="msg" id="formMsg"></div>
+                <div class="cmd-box" id="cmdBox"><button class="copy-btn" id="copyBtn">📋 Copy</button><code id="cmdText"></code></div>
+            </div>
+
+            <!-- Current APKs -->
+            <div class="section-title">📦 Current APKs</div>
+            <div class="app-list-admin" id="appList"></div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9"; // admin123
+        const SHEET_ID = "1CEHLo22Sm6TJ9ng4EphXSYf7ywgfr5PN6KQle1Dv_Mc";
+
+        async function sha256(s) { return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)))).map(b=>b.toString(16).padStart(2,'0')).join(''); }
+
+        const $ = id => document.getElementById(id);
+        const loginPage = $('loginPage'), dashboardPage = $('dashboardPage');
+        const passwordInput = $('passwordInput'), loginBtn = $('loginBtn'), loginError = $('loginError');
+        const logoutBtn = $('logoutBtn'), submitBtn = $('submitBtn'), formMsg = $('formMsg');
+        const cmdBox = $('cmdBox'), cmdText = $('cmdText'), copyBtn = $('copyBtn'), appList = $('appList');
+        const fIconFile = $('fIconFile'), fIcon = $('fIcon'), iconPreview = $('iconPreview');
+        const iconProgressBar = $('iconProgressBar'), iconUploadText = $('iconUploadText'), iconMsg = $('iconMsg');
+
+        // Login
+        loginBtn.addEventListener('click', async () => {
+            if ((await sha256(passwordInput.value)) === ADMIN_PASSWORD_HASH) {
+                loginPage.style.display = 'none'; dashboardPage.style.display = 'block'; loginError.style.display = 'none'; loadDashboard();
+            } else { loginError.style.display = 'block'; passwordInput.value = ''; }
+        });
+        passwordInput.addEventListener('keydown', e => { if (e.key === 'Enter') loginBtn.click(); });
+
+        // Logout
+        logoutBtn.addEventListener('click', () => { dashboardPage.style.display = 'none'; loginPage.style.display = 'block'; passwordInput.value = ''; });
+
+        // Load Dashboard
+        async function loadDashboard() {
+            try {
+                const data = await (await fetch('/data.json')).json();
+                $('totalApps').textContent = data.length;
+                $('totalGames').textContent = data.filter(a => a.category === 'Games').length;
+                appList.innerHTML = data.slice(-10).reverse().map(a => `<div class="app-item"><img src="${a.icon}" class="ai-icon" onerror="this.style.display='none'"><div class="ai-info"><div class="ai-name">${a.name}</div><div class="ai-meta">${a.category} · v${a.version}</div></div><span class="ai-ver">${a.category}</span></div>`).join('');
+            } catch(e) { appList.innerHTML = '<p style="color:var(--text-muted)">Failed to load</p>'; }
+        }
+
+        // Icon Upload to GitHub via API
+        fIconFile.addEventListener('change', async function() {
+            const file = this.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) { iconPreview.src = e.target.result; iconPreview.style.display = 'inline-block'; };
+            reader.readAsDataURL(file);
+            if (file.size > 5*1024*1024) { showIconMsg('File too large. Max 5MB.', 'error'); return; }
+
+            $('iconUploadStatus').style.display = 'block'; iconProgressBar.style.width = '30%'; iconUploadText.textContent = 'Reading...';
+            try {
+                const b64 = await new Promise((r,x)=>{const f=new FileReader();f.onload=()=>r(f.result);f.onerror=x;f.readAsDataURL(file);});
+                iconProgressBar.style.width = '50%'; iconUploadText.textContent = 'Uploading to GitHub...';
+                const data = await (await fetch('/api/upload-icon', {
+                    method: 'POST', headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({fileName:file.name, content:b64.split(',')[1], password:passwordInput.value})
+                })).json();
+                if (!data.success) throw new Error(data.error);
+                iconProgressBar.style.width = '100%'; iconUploadText.textContent = '✅ Uploaded!';
+                fIcon.value = data.url; showIconMsg('✅ Icon uploaded! URL auto-filled.', 'success');
+                setTimeout(() => { $('iconUploadStatus').style.display = 'none'; }, 2000);
+            } catch(e) { iconProgressBar.style.width = '0%'; showIconMsg('❌ '+e.message, 'error'); }
+        });
+
+        function showIconMsg(t,type) { iconMsg.textContent=t; iconMsg.className='msg '+type; iconMsg.style.display='block'; setTimeout(()=>iconMsg.style.display='none',5000); }
+
+        // Submit
+        submitBtn.addEventListener('click', async () => {
+            const name=$('fName').value.trim(), desc=$('fDesc').value.trim(), icon=fIcon.value.trim(), version=$('fVersion').value.trim();
+            const category=$('fCategory').value, url=$('fUrl').value.trim(), features=$('fFeatures').value.trim();
+            if (!name||!version||!url) { showMsg('Fill Name, Version, URL', 'error'); return; }
+
+            submitBtn.textContent='⏳ Adding...'; submitBtn.disabled=true;
+            try {
+                const data = await (await fetch('/api/add-apk', {
+                    method:'POST', headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({name,desc,icon,version,category,url,features,password:passwordInput.value})
+                })).json();
+
+                if (data.success) {
+                    showMsg('✅ '+data.message, 'success');
+                    if (data.command) { cmdText.textContent=data.command; cmdBox.style.display='block'; }
+                    ['fName','fDesc','fVersion','fUrl','fFeatures'].forEach(id=>$(id).value=''); fIcon.value='';
+                    setTimeout(loadDashboard, 1000);
+                } else showMsg('❌ '+(data.error||'Failed'), 'error');
+            } catch(e) { showMsg('❌ Error. Use command below.', 'error'); genCmd(); }
+            submitBtn.textContent='➕ Add to Sheet'; submitBtn.disabled=false;
+        });
+
+        function genCmd() {
+            const row = [$('fName').value.trim(), $('fDesc').value.trim()||$('fName').value.trim(), fIcon.value||'', $('fVersion').value.trim(), 'Android', $('fUrl').value.trim(), '', $('fFeatures').value.trim()||'Modded', $('fCategory').value];
+            cmdText.textContent = `maton google-sheets values append ${SHEET_ID} --range 'A1:I1' --json-values '${JSON.stringify([row])}'`;
+            cmdBox.style.display = 'block'; showMsg('✅ Command generated!', 'success');
+        }
+
+        copyBtn.addEventListener('click', () => { navigator.clipboard.writeText(cmdText.textContent).then(()=>{copyBtn.textContent='✅ Copied!';setTimeout(()=>copyBtn.textContent='📋 Copy',2000);}); });
+
+        function showMsg(t,type) { formMsg.textContent=t; formMsg.className='msg '+type; formMsg.style.display='block'; setTimeout(()=>formMsg.style.display='none',5000); }
+    </script>
+</body>
+</html>

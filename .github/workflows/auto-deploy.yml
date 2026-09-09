@@ -27,9 +27,10 @@ jobs:
 
       - name: Fetch sheet data with curl
         run: |
-          curl -s "https://docs.google.com/spreadsheets/d/${{ secrets.SHEET_ID }}/gviz/tq?tqx=out:csv&sheet=পত্রক1" > raw_sheet.csv
+          curl -s "https://docs.google.com/spreadsheets/d/${{ secrets.SHEET_ID }}/gviz/tq?tqx=out:csv&sheet=পত্‌্রক1" > raw_sheet.csv
           echo "Sheet data fetched"
           wc -l raw_sheet.csv
+          head -3 raw_sheet.csv
 
       - name: Convert CSV to TSV for generate-site.py
         run: |

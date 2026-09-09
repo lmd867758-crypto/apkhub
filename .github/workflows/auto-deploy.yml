@@ -17,7 +17,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_PAT }}
           persist-credentials: true
 
       - name: Set up Python
@@ -33,7 +33,6 @@ jobs:
 
       - name: Convert CSV to TSV for generate-site.py
         run: |
-          # Convert CSV to TSV (handle commas in fields properly)
           python3 -c "
           import csv
           with open('raw_sheet.csv', 'r', encoding='utf-8') as f:
@@ -67,7 +66,7 @@ jobs:
       - name: Deploy to Cloudflare Pages
         if: steps.git-check.outputs.changes == 'true'
         run: |
-          npm install -g wrangler
+          npm install -g wrangler@latest
           wrangler pages deploy . --project-name gridexcentral --branch main
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

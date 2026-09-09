@@ -331,7 +331,7 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 </head>
 <body>
     <header class="header"><div class="container"><div class="header-inner">
-        <a href="/" class="logo">Gride X <span class="logo-highlight">Central</span></a>
+        <a href="/" class="logo-link header-logo-link"><video class="header-logo-video" src="/assets/header-logo.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Gride X Central"></video></a>
         <nav class="nav"><a href="/" class="nav-link">Home</a><a href="/categories/games" class="nav-link">Games</a><a href="/categories/apps" class="nav-link">Apps</a></nav>
     </div></div></header>
 
@@ -399,7 +399,7 @@ CATEGORY_TEMPLATE = '''<!DOCTYPE html>
 </head>
 <body data-category="{cat}">
     <header class="header"><div class="container"><div class="header-top">
-        <a href="/" class="logo-link"><img src="/assets/logo-simple.jpg" alt="Gride X Central" class="logo-img"></a>
+        <a href="/" class="logo-link header-logo-link"><video class="header-logo-video" src="/assets/header-logo.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Gride X Central"></video></a>
     </div></div></header>
     <main class="main-content"><div class="container">
         <h1>{heading} <span style="font-size:.6em;color:var(--text-muted)">({count} available)</span></h1>

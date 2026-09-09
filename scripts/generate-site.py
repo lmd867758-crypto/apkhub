@@ -80,7 +80,7 @@ def generate_app_pages(apps):
             for f in app["features"].split(",") if f.strip()
         )
         
-        html = PAGE_TEMPLATE.format(**app, feat_tags=feat_tags, slug=slug)
+        html = PAGE_TEMPLATE.format(**app, feat_tags=feat_tags)
         
         with open(os.path.join(adir, "index.html"), "w", encoding="utf-8") as f:
             f.write(html)

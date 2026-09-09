@@ -1,0 +1,28 @@
+name: Oneoff Pages Cleanup
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install -g wrangler@latest
+      - name: List projects
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: wrangler pages project list
+      - name: Delete old project if present
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if wrangler pages project list | grep -q "apkhub-cxv"; then
+            wrangler pages deployment list --project-name apkhub-cxv | head -5
+            wrangler pages project delete apkhub-cxv
+            echo "DELETED apkhub-cxv"
+          else
+            echo "apkhub-cxv not found"
+          fi

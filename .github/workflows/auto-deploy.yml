@@ -1,0 +1,51 @@
+name: Auto Deploy from Sheet
+
+on:
+  schedule:
+    # Run every 5 minutes
+    - cron: '*/5 * * * *'
+  workflow_dispatch:  # Manual trigger option
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install maton CLI
+        run: pip install maton-cli
+
+      - name: Fetch sheet data
+        run: |
+          maton google-sheets values get ${{ secrets.SHEET_ID }} --range 'A:I' > raw_sheet.txt
+          echo "Sheet data fetched"
+          wc -l raw_sheet.txt
+
+      - name: Generate site
+        run: |
+          cd scripts
+          python generate-site.py ../raw_sheet.txt
+          cd ..
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          git add -A
+          git diff --staged --quiet || echo "changes=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push if changed
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config user.name "Gride X Auto Deploy"
+          git config user.email "grideon@users.noreply.github.com"
+          git commit -m "Auto update from sheet: $(date +'%Y-%m-%d %H:%M')"
+          git push

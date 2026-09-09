@@ -570,3 +570,57 @@ body {
 @media (max-width: 640px) {
     .info-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+
+/* === Home / listing redesign (matches detail style) === */
+.search-box {
+    background: #12122a !important;
+    border: 1px solid rgba(0,229,255,.16) !important;
+    border-radius: 14px !important;
+    box-shadow: inset 0 0 24px rgba(10,10,26,.5);
+    transition: border-color .2s, box-shadow .2s;
+}
+.search-box:focus-within {
+    border-color: rgba(108,92,231,.65) !important;
+    box-shadow: 0 0 22px rgba(108,92,231,.28), inset 0 0 24px rgba(10,10,26,.5) !important;
+}
+.apk-card {
+    background: linear-gradient(160deg, #12122a 0%, #0d0d24 100%);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 15px;
+    padding: 12px;
+    transition: border-color .18s, transform .18s, box-shadow .18s;
+}
+.apk-card:hover {
+    border-color: rgba(0,229,255,.38);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 26px rgba(108,92,231,.18);
+}
+.card-icon-frame {
+    position: relative; border-radius: 14px; padding: 2px; line-height: 0;
+    background: linear-gradient(135deg, #00e5ff, #6c5ce7 55%, #ff007f);
+    flex: 0 0 auto;
+}
+.card-icon-frame .apk-icon { border-radius: 12px; display: block; }
+.apk-name { color: #e8e9ff; font-weight: 700; font-size: .92rem; }
+.apk-name:hover { color: #00e5ff; }
+.download-btn-sm {
+    background: linear-gradient(135deg, #6c5ce7, #8b7cf7);
+    border: none; color: #fff; font-weight: 700; font-size: .74rem;
+    padding: 9px 16px; border-radius: 10px; white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(108,92,231,.35);
+}
+.download-btn-sm:hover { filter: brightness(1.12); }
+.seo-static { margin-top: 26px; }
+.seo-links { list-style: none; margin: 0; padding: 0; columns: 2; gap: 18px; }
+.seo-links li { break-inside: avoid; margin-bottom: 7px; }
+.seo-links a {
+    color: #a9adc9; text-decoration: none; font-size: .82rem;
+    padding-left: 14px; position: relative;
+}
+.seo-links a::before {
+    content: ""; position: absolute; left: 0; top: 50%; width: 6px; height: 6px;
+    margin-top: -3px; border-radius: 2px;
+    background: linear-gradient(135deg, #00e5ff, #6c5ce7);
+}
+.seo-links a:hover { color: #00e5ff; }

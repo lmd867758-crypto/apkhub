@@ -164,17 +164,17 @@ def card_html(app):
     desc = esc(app["description"])
     icon = esc(app["icon"])
     return f'''<div class="apk-card">
-                <a href="/app/{slug}/"><img src="{icon}" alt="{name}" class="apk-icon" loading="lazy"></a>
+                <a href="/app/{slug}/" class="card-icon-frame"><img src="{icon}" alt="{name}" class="apk-icon" loading="lazy"></a>
                 <div class="apk-info">
                     <a href="/app/{slug}/" class="apk-name">{name}</a>
                     <div class="apk-desc">{desc}</div>
                     <div class="apk-meta">
-                        <span class="apk-version">v{esc(app["version"])}</span>
-                        <span class="apk-category">{esc(app["category"])}</span>
+                        <span class="chip chip-purple">v{esc(app["version"])}</span>
+                        <span class="chip chip-green">{esc(app["category"])}</span>
                     </div>
                 </div>
                 <div class="apk-right">
-                    <a href="{esc(app["downloadUrl"])}" target="_blank" rel="noopener noreferrer" class="download-btn-sm">Download</a>
+                    <a href="{esc(app["downloadUrl"])}" target="_blank" rel="noopener noreferrer" class="download-btn-sm">Get APK</a>
                 </div>
             </div>'''
 
@@ -263,9 +263,9 @@ def update_homepage_links(apps):
     )
     block = (
         '<!-- SEO-STATIC-LIST -->\n'
-        '        <section class="container" style="margin:16px 0 32px">\n'
-        '            <h2 style="font-size:1.1rem">Latest Mods on Gride X Central</h2>\n'
-        '            <ul style="line-height:2">\n'
+        '        <section class="container seo-static">\n'
+        '            <h2 class="sec-title">All Mods</h2>\n'
+        '            <ul class="seo-links">\n'
         + lines +
         '\n            </ul>\n'
         '        </section>\n'

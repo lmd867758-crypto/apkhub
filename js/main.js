@@ -50,19 +50,19 @@
 
         grid.innerHTML = filtered.map(app => `
             <div class="apk-card">
-                <a href="/app/${app.slug}/"><img src="${app.icon}" alt="${app.name}" class="apk-icon" loading="lazy"
+                <a href="/app/${app.slug}/" class="card-icon-frame"><img src="${app.icon}" alt="${app.name}" class="apk-icon" loading="lazy"
                      onerror="this.src='${SVG_PKG}'"></a>
                 <div class="apk-info">
                     <a href="/app/${app.slug}/" class="apk-name">${app.name}</a>
                     <div class="apk-desc">${app.description}</div>
                     <div class="apk-meta">
-                        <span class="apk-version">v${app.version}</span>
+                        <span class="chip chip-purple">v${app.version}</span>
                         <span class="apk-downloads">${SVG_DL} ${randomDownloads()}</span>
-                        <span class="apk-category">${app.category}</span>
+                        <span class="chip chip-green">${app.category}</span>
                     </div>
                 </div>
                 <div class="apk-right">
-                    <a href="${app.downloadUrl}" target="_blank" rel="noopener noreferrer" class="download-btn-sm">${SVG_DL} Download</a>
+                    <a href="${app.downloadUrl}" target="_blank" rel="noopener noreferrer" class="download-btn-sm">${SVG_DL} Get APK</a>
                 </div>
             </div>
         `).join('');

@@ -25,14 +25,24 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install maton CLI
-        run: pip install maton-cli
-
-      - name: Fetch sheet data
+      - name: Fetch sheet data with curl
         run: |
-          maton google-sheets values get $SHEET_ID --range 'A:I' > raw_sheet.txt
+          curl -s "https://docs.google.com/spreadsheets/d/${{ secrets.SHEET_ID }}/gviz/tq?tqx=out:csv" > raw_sheet.csv
           echo "Sheet data fetched"
-          wc -l raw_sheet.txt
+          wc -l raw_sheet.csv
+          head -3 raw_sheet.csv
+
+      - name: Convert CSV to TSV for generate-site.py
+        run: |
+          python3 -c "
+          import csv
+          with open('raw_sheet.csv', 'r', encoding='utf-8') as f:
+              reader = csv.reader(f)
+              with open('raw_sheet.txt', 'w', encoding='utf-8', newline='') as out:
+                  for row in reader:
+                      out.write('\\t'.join(row) + '\\n')
+          "
+          head -5 raw_sheet.txt
 
       - name: Generate site
         run: |

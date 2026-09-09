@@ -2,6 +2,7 @@
 (function() {
     const grid = document.getElementById('apkGrid');
     const searchInput = document.getElementById('searchInput');
+    const category = document.body.dataset.category || null;
     let apkData = [];
 
     function randomDownloads() {
@@ -30,10 +31,13 @@
         if (!grid || !apkData.length) return;
 
         let filtered = apkData;
+        if (category) {
+            filtered = filtered.filter(a => (a.category || '').toLowerCase() === category.toLowerCase());
+        }
         if (query && query.trim()) {
             const q = query.toLowerCase().trim();
-            filtered = apkData.filter(a => 
-                a.name.toLowerCase().includes(q) || 
+            filtered = apkData.filter(a =>
+                a.name.toLowerCase().includes(q) ||
                 a.description.toLowerCase().includes(q) ||
                 a.features.toLowerCase().includes(q)
             );
@@ -46,10 +50,10 @@
 
         grid.innerHTML = filtered.map(app => `
             <div class="apk-card">
-                <img src="${app.icon}" alt="${app.name}" class="apk-icon" loading="lazy"
-                     onerror="this.src='${SVG_PKG}'">
+                <a href="/app/${app.slug}/"><img src="${app.icon}" alt="${app.name}" class="apk-icon" loading="lazy"
+                     onerror="this.src='${SVG_PKG}'"></a>
                 <div class="apk-info">
-                    <div class="apk-name">${app.name}</div>
+                    <a href="/app/${app.slug}/" class="apk-name">${app.name}</a>
                     <div class="apk-desc">${app.description}</div>
                     <div class="apk-meta">
                         <span class="apk-version">v${app.version}</span>

@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /raw_sheet
+Disallow: /functions/
 
 Sitemap: https://gridexcentral.pages.dev/sitemap.xml

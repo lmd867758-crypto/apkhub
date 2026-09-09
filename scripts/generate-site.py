@@ -252,29 +252,16 @@ def generate_category_pages(apps):
 
 
 def update_homepage_links(apps):
-    """Regenerate the static 'Latest mods' crawl-path block in index.html
-    between SEO markers so link equity + crawlability never depend on JS."""
+    """Keep the removed static 'All Mods' block out of index.html across
+    auto-deploys (user requested its removal 2026-09-09)."""
     path = os.path.join(BASE, "index.html")
     with open(path, "r", encoding="utf-8") as f:
         page = f.read()
-    lines = "\n".join(
-        f'                <li><a href="/app/{esc(a["slug"])}/">{esc(a["name"])} v{esc(a["version"])}</a></li>'
-        for a in apps
-    )
-    block = (
-        '<!-- SEO-STATIC-LIST -->\n'
-        '        <section class="container seo-static">\n'
-        '            <h2 class="sec-title">All Mods</h2>\n'
-        '            <ul class="seo-links">\n'
-        + lines +
-        '\n            </ul>\n'
-        '        </section>\n'
-        '        <!-- /SEO-STATIC-LIST -->'
-    )
-    page = re.sub(r"<!-- SEO-STATIC-LIST -->.*?<!-- /SEO-STATIC-LIST -->", block, page, flags=re.S)
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(page)
-    print("OK index.html static link block")
+    cleaned = re.sub(r"\s*<!-- SEO-STATIC-LIST -->.*?<!-- /SEO-STATIC-LIST -->", "", page, flags=re.S)
+    if cleaned != page:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(cleaned)
+        print("index.html static block removed")
 
 
 def update_sitemap(apps):

@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="apk-right">
-                    <a href="${app.downloadUrl}" target="_blank" rel="noopener noreferrer" class="download-btn-sm">${SVG_DL} Get APK</a>
+                    <a href="/app/${app.slug}/" class="download-btn-sm">Open</a>
                 </div>
             </div>
         `).join('');

@@ -174,7 +174,7 @@ def card_html(app):
                     </div>
                 </div>
                 <div class="apk-right">
-                    <a href="{esc(app["downloadUrl"])}" target="_blank" rel="noopener noreferrer" class="download-btn-sm">Get APK</a>
+                    <a href="/app/{slug}/" class="download-btn-sm">Open</a>
                 </div>
             </div>'''
 

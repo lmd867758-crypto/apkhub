@@ -179,6 +179,19 @@ def card_html(app):
             </div>'''
 
 
+def related_card(a):
+    return (f'<a class="related-card" href="/app/{esc(a["slug"])}/">'
+            f'<img src="{esc(a["icon"])}" alt="{esc(a["name"])}" loading="lazy">'
+            f'<div><div class="rel-name">{esc(a["name"])}</div>'
+            f'<div class="rel-ver">v{esc(a["version"])}</div></div></a>')
+
+
+def build_related(app, apps):
+    rel = [a for a in apps if a["category"] == app["category"] and a["slug"] != app["slug"]][:3]
+    if len(rel) < 3:
+        rel += [a for a in apps if a["slug"] != app["slug"] and a not in rel][:3 - len(rel)]
+    return "".join(related_card(a) for a in rel) or '<p class="body-text">More mods coming soon.</p>'
+
 def write_data_json(apps):
     path = os.path.join(BASE, "data.json")
     slim = []
@@ -204,6 +217,7 @@ def generate_app_pages(apps):
         html_out = PAGE_TEMPLATE.format(
             **{k: esc(v) if isinstance(v, str) else v for k, v in app.items()},
             category_l=app["category"].lower(),
+            related_html=build_related(app, apps),
             feat_tags=feat_tags,
             title=esc(seo_title(app)),
             site_url=SITE_URL,
@@ -329,42 +343,73 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
     }}</script>
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
-    <header class="header"><div class="container"><div class="header-inner">
+<body class="detail-page">
+    <header class="header"><div class="container"><div class="header-top">
         <a href="/" class="logo-link header-logo-link"><video class="header-logo-video" src="/assets/header-logo.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Gride X Central"></video></a>
-        <nav class="nav"><a href="/" class="nav-link">Home</a><a href="/categories/games" class="nav-link">Games</a><a href="/categories/apps" class="nav-link">Apps</a></nav>
     </div></div></header>
 
-    <div class="app-detail">
+    <main class="detail-wrap">
         <div class="container">
-            <div class="app-header">
-                <img src="{icon}" alt="{name}" class="app-icon-large">
-                <div>
-                    <h1 class="app-title">{name}</h1>
-                    <p class="app-subtitle">{description}</p>
-                    <a href="{downloadUrl}" target="_blank" rel="noopener noreferrer" class="download-btn">Download APK</a>
+            <nav class="crumbs"><a href="/">Home</a> <span>/</span> <a href="/categories/{category_l}">{category}</a> <span>/</span> <b>{base}</b></nav>
+
+            <section class="detail-hero">
+                <div class="detail-icon-frame"><img src="{icon}" alt="{name}" class="detail-icon"></div>
+                <h1 class="detail-title">{name}</h1>
+                <p class="detail-sub">{description}</p>
+                <div class="detail-meta-chips">
+                    <span class="chip chip-purple">v{version}</span>
+                    <span class="chip">Android</span>
+                    <span class="chip chip-green">Free</span>
                 </div>
-            </div>
-            <div class="app-features"><h3>Mod Features</h3><div class="feature-tags">{feat_tags}</div></div>
-            <div style="margin-top:24px"><p><strong>Version:</strong> {version} | <strong>Category:</strong> <a href="/categories/{category_l}">{category}</a> | <strong>Platform:</strong> Android</p></div>
-            <div style="margin-top:32px"><h3>About {base}</h3>
-                <p style="color:var(--text-muted);line-height:1.8">{description}</p>
-                <p style="color:var(--text-muted);margin-top:8px;line-height:1.8">This modified version of {base} {version} unlocks {features}. Download the APK directly from Gride X Central — no account needed, fast mirror, tested on Android devices before publishing.</p>
-            </div>
-            <div style="margin-top:32px"><h3>How to Install {base} Mod APK</h3>
-                <ol style="color:var(--text-muted);line-height:1.9">
-                    <li>Tap the <strong>Download APK</strong> button and wait for the file to finish downloading.</li>
-                    <li>Open your phone <strong>Settings &rarr; Security</strong> and allow <em>Install unknown apps</em> for your browser or file manager.</li>
-                    <li>Open the downloaded APK file and tap <strong>Install</strong>. If the game needs extra data (OBB), download it from the link on this page and place it in <code>Android/obb/</code> before first launch.</li>
-                    <li>Launch the game and enjoy the unlocked features.</li>
+                <a href="{downloadUrl}" target="_blank" rel="noopener noreferrer" class="download-btn detail-dl">Download APK</a>
+                <p class="detail-note">Direct mirror &middot; No account needed</p>
+            </section>
+
+            <section class="info-grid">
+                <div class="info-card"><span class="info-label">Version</span><span class="info-val">{version}</span></div>
+                <div class="info-card"><span class="info-label">Category</span><span class="info-val">{category}</span></div>
+                <div class="info-card"><span class="info-label">Platform</span><span class="info-val">Android</span></div>
+                <div class="info-card"><span class="info-label">Price</span><span class="info-val">Free</span></div>
+            </section>
+
+            <section class="detail-section">
+                <h2 class="sec-title">Mod Features</h2>
+                <div class="feature-tags">{feat_tags}</div>
+            </section>
+
+            <section class="detail-section">
+                <h2 class="sec-title">About {base}</h2>
+                <p class="body-text">{description}</p>
+                <p class="body-text">This modified version of {base} {version} unlocks {features}. Download the APK directly from Gride X Central &mdash; tested on real Android devices before publishing.</p>
+            </section>
+
+            <section class="detail-section">
+                <h2 class="sec-title">How to Install</h2>
+                <ol class="steps">
+                    <li><span class="step-num">1</span><div>Tap <strong>Download APK</strong> and wait for the file to finish downloading.</div></li>
+                    <li><span class="step-num">2</span><div>Allow <strong>Install unknown apps</strong> for your browser in Settings &rarr; Security.</div></li>
+                    <li><span class="step-num">3</span><div>Open the APK and tap <strong>Install</strong>. If the game needs OBB data, place it in <code>Android/obb/</code> before first launch.</div></li>
+                    <li><span class="step-num">4</span><div>Launch and enjoy the unlocked features.</div></li>
                 </ol>
-            </div>
-            <div style="margin-top:32px"><h3>FAQ</h3>
-                <p style="color:var(--text-muted);line-height:1.8"><strong>Is this {base} APK safe?</strong><br>Every file hosted through our mirrors is scanned before upload. Always re-download from this page rather than third-party links.</p>
-                <p style="color:var(--text-muted);line-height:1.8;margin-top:12px"><strong>Will it auto-update?</strong><br>MOD versions do not update through the Play Store. Bookmark this page — we refresh the {version} build whenever a newer stable mod drops.</p>
-            </div>
-            <div style="margin-top:32px"><p><a href="/categories/{category_l}">&larr; More {category}</a></p></div>
+            </section>
+
+            <section class="detail-section">
+                <h2 class="sec-title">FAQ</h2>
+                <details class="faq"><summary>Do I need to root my phone?</summary><p>No. This build runs on stock Android without root. Just allow unknown-source installs when prompted.</p></details>
+                <details class="faq"><summary>Will it update automatically?</summary><p>MOD versions don't update through the Play Store. Bookmark this page &mdash; we refresh the build whenever a newer stable mod drops.</p></details>
+                <details class="faq"><summary>"App not installed" error &mdash; what now?</summary><p>Uninstall the Play Store version first (signature conflict), make sure you have free storage, then retry the install.</p></details>
+            </section>
+
+            <section class="detail-section">
+                <h2 class="sec-title">More {category}</h2>
+                <div class="related-grid">{related_html}</div>
+            </section>
         </div>
+    </main>
+
+    <div class="sticky-dl">
+        <div class="sticky-dl-name">{base} <span>v{version}</span></div>
+        <a href="{downloadUrl}" target="_blank" rel="noopener noreferrer" class="download-btn sticky-dl-btn">Get APK</a>
     </div>
 
     <footer class="footer"><div class="container">
@@ -375,7 +420,6 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
         </div>
         <div class="footer-bottom"><p>&copy; 2026 Gride X Central. All trademarks belong to their respective owners. Powered by Gride X Echo.</p></div>
     </div></footer>
-    <div class="ad-overlay" id="adOverlay">...</div>
     <script src="/js/ads.js"></script>
     <script src="/js/main.js"></script>
 </body>

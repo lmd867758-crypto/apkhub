@@ -15,3 +15,12 @@
 
 /admin/*
   X-Robots-Tag: noindex, nofollow
+
+/sitemap.xml
+  Content-Type: application/xml
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600
+
+/robots.txt
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600

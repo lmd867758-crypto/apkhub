@@ -1,3 +1,6 @@
 # Redirects for SEO
 /app/* /app/:splat 200
+/categories/games.html /categories/games 301
+/categories/apps.html /categories/apps 301
+/categories/tools.html /categories/tools 301
 /categories/* /categories/:splat 200

@@ -624,3 +624,42 @@ body {
     background: linear-gradient(135deg, #00e5ff, #6c5ce7);
 }
 .seo-links a:hover { color: #00e5ff; }
+
+
+/* === App name styling + infinite-scroll sentinel === */
+.apk-info .apk-name {
+    display: block;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: .2px;
+    line-height: 1.35;
+    margin-bottom: 4px;
+    background: linear-gradient(90deg, #ffffff, #b9c2ff 60%, #8ea0ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #e8e9ff;
+}
+.apk-info .apk-name:hover {
+    background: linear-gradient(90deg, #00e5ff, #8b7cf7);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+@media (min-width: 768px) {
+    .apk-info .apk-name { font-size: 1.02rem; }
+}
+.load-sentinel {
+    display: flex; justify-content: center; gap: 8px;
+    padding: 22px 0 8px; height: 40px;
+}
+.load-dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: linear-gradient(135deg, #00e5ff, #6c5ce7);
+    animation: dotBounce 1s ease-in-out infinite;
+}
+.load-dot:nth-child(2) { animation-delay: .15s; }
+.load-dot:nth-child(3) { animation-delay: .3s; }
+@keyframes dotBounce {
+    0%, 100% { transform: translateY(0); opacity: .5; }
+    50% { transform: translateY(-7px); opacity: 1; }
+}

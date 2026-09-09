@@ -5,6 +5,16 @@
     const category = document.body.dataset.category || null;
     let apkData = [];
 
+    // sentinel element for infinite scroll (hoisted, used by observers below)
+    var sentinel = makeSentinel();
+    function makeSentinel() {
+        var el = document.createElement('div');
+        el.className = 'load-sentinel';
+        el.style.display = 'none';
+        el.innerHTML = '<span class="load-dot"></span><span class="load-dot"></span><span class="load-dot"></span>';
+        return el;
+    }
+
     function randomDownloads() {
         const nums = ['1.2M+', '2.8M+', '687K+', '1.4M+', '950K+', '3.1M+', '500K+', '2.2M+', '780K+', '1.8M+', '4.2M+', '650K+'];
         return nums[Math.floor(Math.random() * nums.length)];
@@ -27,28 +37,12 @@
         }
     }
 
-    function renderApps(query) {
-        if (!grid || !apkData.length) return;
+    let shown = 0;
+    const BATCH = 7;
+    let currentList = [];
 
-        let filtered = apkData;
-        if (category) {
-            filtered = filtered.filter(a => (a.category || '').toLowerCase() === category.toLowerCase());
-        }
-        if (query && query.trim()) {
-            const q = query.toLowerCase().trim();
-            filtered = apkData.filter(a =>
-                a.name.toLowerCase().includes(q) ||
-                a.description.toLowerCase().includes(q) ||
-                a.features.toLowerCase().includes(q)
-            );
-        }
-
-        if (filtered.length === 0) {
-            grid.innerHTML = '<div class="empty-state">' + SVG_SEARCH + '<h3>No results</h3><p>Try a different search</p></div>';
-            return;
-        }
-
-        grid.innerHTML = filtered.map(app => `
+    function cardHTML(app) {
+        return `
             <div class="apk-card">
                 <a href="/app/${app.slug}/" class="card-icon-frame"><img src="${app.icon}" alt="${app.name}" class="apk-icon" loading="lazy"
                      onerror="this.src='${SVG_PKG}'"></a>
@@ -57,7 +51,6 @@
                     <div class="apk-desc">${app.description}</div>
                     <div class="apk-meta">
                         <span class="chip chip-purple">v${app.version}</span>
-                        <span class="apk-downloads">${SVG_DL} ${randomDownloads()}</span>
                         <span class="chip chip-green">${app.category}</span>
                     </div>
                 </div>
@@ -65,8 +58,55 @@
                     <a href="/app/${app.slug}/" class="download-btn-sm">Open</a>
                 </div>
             </div>
-        `).join('');
+        `;
     }
+
+    function appendBatch() {
+        if (!grid) return;
+        const batch = currentList.slice(shown, shown + BATCH);
+        batch.forEach(app => grid.insertAdjacentHTML('beforeend', cardHTML(app)));
+        shown += batch.length;
+        if (shown < currentList.length) {
+            sentinel.style.display = 'block';
+        } else {
+            sentinel.style.display = 'none';
+        }
+    }
+
+    function renderApps(query) {
+        if (!grid || !apkData.length) return;
+
+        currentList = apkData;
+        if (category) {
+            currentList = currentList.filter(a => (a.category || '').toLowerCase() === category.toLowerCase());
+        }
+        if (query && query.trim()) {
+            const q = query.toLowerCase().trim();
+            currentList = apkData.filter(a =>
+                a.name.toLowerCase().includes(q) ||
+                a.description.toLowerCase().includes(q) ||
+                a.features.toLowerCase().includes(q)
+            );
+        }
+
+        grid.innerHTML = '';
+        shown = 0;
+
+        if (currentList.length === 0) {
+            grid.innerHTML = '<div class="empty-state">' + SVG_SEARCH + '<h3>No results</h3><p>Try a different search</p></div>';
+            sentinel.style.display = 'none';
+            return;
+        }
+        appendBatch();
+    }
+
+    // infinite scroll: sentinel visible -> load next batch
+    const io = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting && shown < currentList.length) appendBatch();
+    }, { rootMargin: '300px' });
+    io.observe(sentinel);
+
+    if (grid) grid.parentNode.insertBefore(sentinel, grid.nextSibling);
 
     if (searchInput) {
         searchInput.addEventListener('input', e => renderApps(e.target.value));

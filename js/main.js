@@ -16,6 +16,7 @@
     }
 
     const SVG_DL = '<svg class="icon icon-sm" width="12" height="12"><use href="#icon-download"/></svg>';
+    const SVG_OPEN = '<svg class="icon icon-sm" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
     const SVG_PKG = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect fill=%22%2312122a%22 width=%22100%22 height=%22100%22/%3E%3Crect x=%2225%22 y=%2230%22 width=%2250%22 height=%2240%22 rx=%224%22 fill=%22none%22 stroke=%22%23666%22 stroke-width=%223%22/%3E%3Cpath d=%22M25 45h50%22 stroke=%22%23666%22 stroke-width=%223%22/%3E%3Cpath d=%22M50 30v40%22 stroke=%22%23666%22 stroke-width=%223%22/%3E%3C/svg%3E';
     const SVG_ALERT = '<svg class="icon icon-md" style="margin-bottom:8px"><use href="#icon-alert"/></svg>';
     const SVG_SEARCH = '<svg class="icon icon-md" style="margin-bottom:8px"><use href="#icon-search"/></svg>';
@@ -98,7 +99,8 @@
 
     function renderApps(query) {
         if (!grid) return;
-        let filtered = apkData;
+        // newest first (sheet rows are oldest -> newest; reverse for display)
+        let filtered = apkData.slice().reverse();
 
         const cats = categoryFromPath();
         if (cats) filtered = filtered.filter(a => cats.indexOf(a.category.toLowerCase()) !== -1);
@@ -131,7 +133,7 @@
                     </div>
                 </div>
                 <div class="apk-right">
-                    <a href="${esc(app.downloadUrl)}" target="_blank" rel="noopener noreferrer" class="download-btn-sm">${SVG_DL} Download</a>
+                    <a href="/dl.html?id=${app.id}" class="download-btn-sm">${SVG_OPEN} Open</a>
                 </div>
             </div>
         `).join('');

@@ -53,9 +53,10 @@
         const json = parseGviz(text);
         const rows = json.table.rows || [];
         return rows.slice(1) // skip header row
-            .map(r => {
+            .map((r, i) => {
                 const c = r.c || [];
                 return {
+                    id: i + 2, // sheet row number (row 1 = header)
                     name:        cellText(c[0]).trim(),
                     description: cellText(c[1]).trim(),
                     icon:        cellText(c[2]).trim(),
@@ -121,7 +122,7 @@
                 <img src="${esc(app.icon)}" alt="${esc(app.name)}" class="apk-icon" loading="lazy"
                      onerror="this.src='${SVG_PKG}'">
                 <div class="apk-info">
-                    <div class="apk-name">${esc(app.name)}</div>
+                    <a class="apk-name" href="/dl.html?id=${app.id}">${esc(app.name)}</a>
                     <div class="apk-desc">${esc(app.description)}</div>
                     <div class="apk-meta">
                         <span class="apk-version">v${esc(app.version)}</span>
